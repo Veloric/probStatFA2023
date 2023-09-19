@@ -74,4 +74,25 @@ import java.util.HashMap;
         return result;
     }
 
+    public Double fact(int n){
+        if(n <= 0){
+            return 1.0;
+        } else {
+            return(n * fact(n-1));
+        }
+    }
+
+
+    public Double combine(int n, int r){
+        Double result = 0.0;
+        Double top = fact(n); // Factorial of N
+        Double bottom = fact(r) * fact(n-r); // Factorial of (r and n-r)
+        result = top/bottom;
+        return result;
+    }
+
+    public Double permutate(int n, int r){
+        return fact(n) / fact(n-r);
+    }
+
  }
