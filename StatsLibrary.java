@@ -5,6 +5,7 @@
  */
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
  public class StatsLibrary{
 
@@ -41,18 +42,22 @@ import java.util.Comparator;
      * @return -- the value appearing most often (returning 0 means NO MODE)
      */
     public Double findMode(ArrayList<Double> nums){
-        Double result = 0.0;
-        int maxCount = 0;
+        nums.sort(Comparator.naturalOrder());
+        Double result = 0.0; // Value
+        int maxCount = 0; // Frequency
+        HashMap<Double, Integer> hm = new HashMap<Double, Integer>();
         for(int i = 0; i < nums.size(); i++){
-            int count = 0;
-            for(int j = 0; j < nums.size(); j++){
-                if(nums.get(i) == nums.get(j)) {
-                    count = count + 1;
+            if(hm.get(nums.get(i)) != null){
+                int current = hm.get(nums.get(i));
+                current++;
+                hm.put(nums.get(i), current);
+
+                if(current > maxCount){
+                    maxCount = current;
+                    result = nums.get(i);
                 }
-            }
-            if(count >= maxCount){
-                maxCount = count;
-                result = nums.get(i);
+            } else {
+                hm.put(nums.get(i), 1);
             }
         }
         return result;
