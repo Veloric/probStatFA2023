@@ -1,5 +1,5 @@
 Kyle Geddes
-10/30/2023
+09/11/2023
 Probability and Applied Statistics Github Repository
 
 Within the Project_1 folder contains all work and documentation for project 1 as of 10/30/2023.

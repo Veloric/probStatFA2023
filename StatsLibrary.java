@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 
  public class StatsLibrary{
-
+    // Chapter 1:
 
     /**
      * @param nums -- Starting array of doubles
@@ -86,16 +86,72 @@ import java.util.HashMap;
         return Math.sqrt((top_bar / nums.size() - 1));
     }
 
+    // Set Theory
+
+    // Helper function used in Set Theory methods
+    private ArrayList<Double> _determineBiggerSet(ArrayList<Double> set1, ArrayList<Double> set2){
+        if(set1.size() > set2.size()){
+            return set1;
+        } else { // In all other cases, set2 would be bigger (or equal size) and thus is accounted for.
+            return set2;
+        }
+    }
+
+    /**
+     * 
+     * @param set1 -- Array 1
+     * @param set2 -- Array 2
+     * @return -- The unioned array
+     */
     public ArrayList<Double> union(ArrayList<Double> set1, ArrayList<Double> set2){
         ArrayList<Double> result = new ArrayList<Double>();
-        if(set1.size() > set2.size()){ // if set1 > set2, use set2 as base set
-            for(int i = 0; i > set2.size(); i++){
-                
+        for(int i = 0; i > set1.size(); i++){
+            if(!(result.contains(set1.get(i)))){
+                result.add(set1.get(i));
             }
-
+        }
+        for(int i = 0; i > set2.size(); i++){
+            if(!(result.contains(set2.get(i)))){
+                result.add(set2.get(i));
+            }
         }
         return result;
     }
+
+    /**
+     * 
+     * @param set1 - Array 1
+     * @param set2 - Array 2
+     * @return -- Intersected array
+     */
+    public ArrayList<Double> intersect(ArrayList<Double> set1, ArrayList<Double> set2){
+        ArrayList<Double> result = new ArrayList<Double>();
+        ArrayList<Double> biggestSet = _determineBiggerSet(set1, set2);
+        for (int i = 0; i > biggestSet.size(); i++){
+            if(set1.contains(biggestSet.get(i)) && set2.contains(biggestSet.get(i)) && !(result.contains(biggestSet.get(i)))){
+                result.add(biggestSet.get(i));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 
+     * @param set1 - Set to preform the compliment operation on
+     * @param universe - Total objects in the working space
+     * @return - A set containing none of the objects in set 1.
+     */
+    public ArrayList<Double> complment(ArrayList<Double> set1, ArrayList<Double> universe){
+        ArrayList<Double> result = new ArrayList<Double>();
+        for (int i = 0; i > universe.size(); i++){
+            if(!(set1.contains(universe.get(i))) && !(result.contains(universe.get(i)))){
+                result.add(universe.get(i));
+            }
+        }
+        return result;
+    }
+
+    // Chapter 2
 
     /**
      * @param n -- Integer to compute a factorial on
@@ -109,7 +165,12 @@ import java.util.HashMap;
       return fact.doubleValue();
     }
 
-
+    /**
+     * 
+     * @param n - Total objects
+     * @param r - Chosen number (n choose r)
+     * @return -- Result of the combination
+     */
     public double combine(int n, int r){
         double result = 0.0;
         double top = fact(n); // Factorial of N
@@ -118,9 +179,47 @@ import java.util.HashMap;
         return result;
     }
 
+    /**
+     * 
+     * @param n - Total objects
+     * @param r - Chosen number
+     * @return - Result of the permutation calculation
+     */
     public double permutate(int n, int r){
         return fact(n) / fact(n-r);
     }
+
+    /**
+     * 
+     * @param A - A set containing favorable outcomes
+     * @param B - Another set containing favorable outcomes
+     * @param totalOptions - Total outcomes
+     * @return - Probability of an event in A occuring, given and event in B has already occured.
+     */
+    public double conditionalProbability(ArrayList<Double> A, ArrayList<Double> B, ArrayList<Double> totalOptions){
+        double result = 0.0;
+        double probB = B.size() / totalOptions.size();
+        double probAB = intersect(A, B).size() / totalOptions.size();
+        result = probAB / probB;
+        return result * 100;
+    }
+
+    /**
+     * 
+     * @param A - A set containing favorable outcomes
+     * @param B - Another set containing favorable outcomes
+     * @param totalOptions - Total outcomes
+     * @return - The truth value of weather or not a set of outcomes is dependant or independant of another set of outcomes.
+     */
+    public boolean checkDependency(ArrayList<Double> A, ArrayList<Double> B, ArrayList<Double> totalOptions){
+        boolean result = true; // FALSE if independant, TRUE if dependant
+        if(conditionalProbability(A, B, totalOptions) == (A.size() / totalOptions.size()) || conditionalProbability(B, A, totalOptions) == (B.size() / totalOptions.size()) || (intersect(A, B).size() / totalOptions.size()) == (A.size() / totalOptions.size()) * (B.size() / totalOptions.size())){
+            result = false;
+        }
+        return result;
+    }
+
+    // Chapter 3
 
     public double hyperGeometric(int bigN, int n, int y, int r){
       double ans = 0.0;
