@@ -1,7 +1,7 @@
-/*
+/**
  * @author Kyle Geddes
  * 09/11/2023
- * Library of all satastic functions and calculations throughout the semester
+ * A libraray xontaining all the formula's throughout the semester
  */
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -141,7 +141,7 @@ import java.util.HashMap;
      * @param universe - Total objects in the working space
      * @return - A set containing none of the objects in set 1.
      */
-    public ArrayList<Double> complment(ArrayList<Double> set1, ArrayList<Double> universe){
+    public ArrayList<Double> compliment(ArrayList<Double> set1, ArrayList<Double> universe){
         ArrayList<Double> result = new ArrayList<Double>();
         for (int i = 0; i > universe.size(); i++){
             if(!(set1.contains(universe.get(i))) && !(result.contains(universe.get(i)))){
@@ -201,7 +201,24 @@ import java.util.HashMap;
         double probB = B.size() / totalOptions.size();
         double probAB = intersect(A, B).size() / totalOptions.size();
         result = probAB / probB;
-        return result * 100;
+        return result;
+    }
+
+    /**
+     * 
+     * @param A - A set containing favorable outcomes
+     * @param B - Another set containing favorable outcomes
+     * @param totalOptions - Total outcomes
+     * @return - Probability of an event in B occuring provided an event in A already occured.
+     */
+    public double bayesTheorem(ArrayList<Double> A, ArrayList<Double> B, ArrayList<Double> totalOptions){
+        double ans = 0;
+        double probB = B.size() / totalOptions.size();
+        double conditionalAB = conditionalProbability(A, B, totalOptions);
+        double top = probB * conditionalAB;
+        double bottom = (conditionalAB * probB) + (conditionalProbability(A, compliment(B, totalOptions), totalOptions) * (1 - probB));
+        ans = top / bottom;
+        return ans;
     }
 
     /**
@@ -221,19 +238,92 @@ import java.util.HashMap;
 
     // Chapter 3
 
+    /**
+     * 
+     * @param n -- Total number of options
+     * @param y -- Random variable, usually depictis selected options
+     * @param p -- Success chance
+     * @return - Chance of pass over n - y amount of trials.
+     */
+    public double binomialDist(int n, int y, double p){
+        double ans = 0;
+        ans = (combine(n, y) * Math.pow(p, y)) * Math.pow(1 - p, n - y);
+        return ans;
+    }
+
+    /**
+     * 
+     * @param n - Total number of options
+     * @param y - Random variable
+     * @param q - Chance of failure
+     * @return - How many times an expirement fails before one pass.
+     */
+    public double geometricDist(int n, int y, double q){
+        double ans = 0;
+        ans = Math.pow(q, (double) y - 1) * (1 - q);
+        return ans;
+    }
+
+    /**
+     * 
+     * @param bigN - All options
+     * @param n - Total favorable options
+     * @param y - Random variable (favorable option)
+     * @param r - 2nd favorable option
+     * @return - Answer to the hyper geometric distribution
+     */
     public double hyperGeometric(int bigN, int n, int y, int r){
       double ans = 0.0;
       double top = combine(r, y) * combine(bigN - r, n - y);
       double bottom = combine(bigN, n);
-      ans = (top / bottom) * 100;
-
+      ans = (top / bottom);
       return ans;
     }
 
+    /**
+     * 
+     * @param y - Random variable (total outcomes)
+     * @param r - Favorable outcomes
+     * @param p - Success chance
+     * @return - Answer to the negative binomial distribution 
+     */
    public double negBinomialDist(int y, int r, double p){
      double ans = 0.0;
      ans = combine(y-1, r-1) * (Math.pow(p, y) * Math.pow(1 - p, y - r));
-
      return ans;
    }
+
+   /**
+    * 
+    * @param y - Random variable
+    * @param k - Total number of events
+    * @param n - Number of units
+    * @return - Answer to the possion distribution
+    */
+   public double possionDist(int y, int k, double n){
+    double ans = 0;
+    double lambda = k / n;
+    ans = ((Math.pow(lambda, (double) y)) / (fact(y))) * Math.pow(Math.E, -lambda);
+    return ans;
+   }
+
+   /**
+    * 
+    * @param y - Random varible 
+    * @param within_number - Given two bounds, within_number is the distance between them
+    * @param stdev - Standard deviation of the data set.
+    * @param mean - Mean of the data set
+    * @return - A percentage of data values lying in k standard deviations of the mean 
+    */
+   public double chevychev(int y, int within_number, double stdev, int mean){
+    double ans = 0;
+    double k = within_number / stdev;
+    if(Math.abs(y - mean) < k*stdev){
+        ans = 1 - (1 / Math.pow(k, (double) 2));
+    } else if(Math.abs(y - mean) >= k * stdev){
+        ans = 1 / (Math.pow(k, (double)2));
+    }
+    return ans * 100;
+   }
+
  }
