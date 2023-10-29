@@ -21,5 +21,6 @@ FILE OUTLINE:
 -> Stats _ FormulaSheet.docx | A neatly typed formula sheet with all the formulas learned in the course up until now.
 -> Stats _ Github Assignment.docx | One page, single spaced essay about Git, Git workflow, etc. Screenshots included within document.
 -> Stats _ Histogram Work.xlsx | Excel file containing the Histogram assignment from Week 1 of the course.
+-> carData.xlsx | Excel file with graphs from the generated car data.
 
 Unfortunately, do to time constraints, I was unable to provide a comprehensive document detailing testing, debugging, and outputs of all the programs, run the tester class to see the basic (but configurable) tests preformed!
