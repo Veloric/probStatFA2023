@@ -1,7 +1,9 @@
 /**
+ * Produces cars from reading in a file, or generating them randomly and then outputting them into a .csv.
+ * Knowledge obtained from: https://www.w3schools.com/java/java_files.asp
+ * Further documentation looked up from the Java doc.
  * @author Kyle Geddes
  * 10/28/2023
- * Factory for Car.java
  */
 
 import java.io.File;
