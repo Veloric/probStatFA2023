@@ -14,5 +14,25 @@ public class Car {
 		this.color = color;
 		this.miles = miles;
 	}
+
+	public String getType(){
+		return this.carType;
+	}
+	
+	public int getYear(){
+		return this.year;
+	}
+
+	public String getColor(){
+		return this.color;
+	}
+
+	public int getMiles(){
+		return this.miles;
+	}
+
+	public String print(){
+		return this.carType + " " + this.year + " " + this.color + " " + this.miles;
+	}
 	
 }

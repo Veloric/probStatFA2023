@@ -105,12 +105,12 @@ import java.util.HashMap;
      */
     public ArrayList<Double> union(ArrayList<Double> set1, ArrayList<Double> set2){
         ArrayList<Double> result = new ArrayList<Double>();
-        for(int i = 0; i > set1.size(); i++){
+        for(int i = 0; i < set1.size(); i++){
             if(!(result.contains(set1.get(i)))){
                 result.add(set1.get(i));
             }
         }
-        for(int i = 0; i > set2.size(); i++){
+        for(int i = 0; i < set2.size(); i++){
             if(!(result.contains(set2.get(i)))){
                 result.add(set2.get(i));
             }
@@ -127,7 +127,7 @@ import java.util.HashMap;
     public ArrayList<Double> intersect(ArrayList<Double> set1, ArrayList<Double> set2){
         ArrayList<Double> result = new ArrayList<Double>();
         ArrayList<Double> biggestSet = _determineBiggerSet(set1, set2);
-        for (int i = 0; i > biggestSet.size(); i++){
+        for (int i = 0; i < biggestSet.size(); i++){
             if(set1.contains(biggestSet.get(i)) && set2.contains(biggestSet.get(i)) && !(result.contains(biggestSet.get(i)))){
                 result.add(biggestSet.get(i));
             }
@@ -143,7 +143,7 @@ import java.util.HashMap;
      */
     public ArrayList<Double> compliment(ArrayList<Double> set1, ArrayList<Double> universe){
         ArrayList<Double> result = new ArrayList<Double>();
-        for (int i = 0; i > universe.size(); i++){
+        for (int i = 0; i < universe.size(); i++){
             if(!(set1.contains(universe.get(i))) && !(result.contains(universe.get(i)))){
                 result.add(universe.get(i));
             }
