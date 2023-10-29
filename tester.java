@@ -22,7 +22,10 @@ public class tester {
         System.out.println(String.format("A permutation between %d and %d is: %.2f", 30, 3, lib.permutate(30, 3)));
 
         // Three Doors Simulation
-        
+        ThreeDoors sim = new ThreeDoors();
+        double probNoChange = sim.simulate(10000, false);
+        double probWithChange = sim.simulate(10000, true);
+        System.out.println("Monte's Three Door simulation, running with: 10000 trials and changing the chosen door each time: " + probWithChange + " percent win chance. Now without changing the chosen door: " + probNoChange + " percent win chance.");
 
         //Car factory tests
         /*
