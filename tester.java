@@ -28,7 +28,6 @@ public class tester {
         System.out.println("Monte's Three Door simulation, running with: 10000 trials and changing the chosen door each time: " + probWithChange + " percent win chance. Now without changing the chosen door: " + probNoChange + " percent win chance.");
 
         //Car factory tests
-        /*
         Factory carFactory = new Factory();
         ArrayList<Car> carArray = carFactory.generateCars(2000);
         carFactory.outputToFile(carArray, "carData.csv");
@@ -36,7 +35,6 @@ public class tester {
         for(int i = 0; i < newArray.size(); i++){
             System.out.println(i + ": " + newArray.get(i).print());
         }
-        */
 
         //Birthday Comparison Test
         ClassEvaluator cv = new ClassEvaluator();

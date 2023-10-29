@@ -15,9 +15,11 @@ FILE OUTLINE:
 -> Factory.java | Constructs cars, outputs and reads data from carData.csv
 -> HandEvaluator.java | Evaluates a given hand of cards, and weather or not any combinations are note worthy.
 -> Person.java | Used to compare birthdays of a given group of people.
+-> ThreeDoors.java | Preforms a Monte Carlo Three Door simulation and outputs the probability of a win.
 
 /Project_1/Documentation
--> Stats_ FormulaSheet.docx | A neatly typed formula sheet with all the formulas learned in the course up until now.
--> Stats_ Histogram Work.xlsx | Excel file containing the Histogram assignment from Week 1 of the course.
+-> Stats _ FormulaSheet.docx | A neatly typed formula sheet with all the formulas learned in the course up until now.
+-> Stats _ Github Assignment.docx | One page, single spaced essay about Git, Git workflow, etc. Screenshots included within document.
+-> Stats _ Histogram Work.xlsx | Excel file containing the Histogram assignment from Week 1 of the course.
 
-Unfortunately, do to time constraints, I was unable to provide a comprehensive document detailing testing, debugging, and outputs of all the programs, run the tester class if you're curious!
+Unfortunately, do to time constraints, I was unable to provide a comprehensive document detailing testing, debugging, and outputs of all the programs, run the tester class to see the basic (but configurable) tests preformed!
