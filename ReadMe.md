@@ -23,4 +23,4 @@ FILE OUTLINE:
 -> Stats _ Histogram Work.xlsx | Excel file containing the Histogram assignment from Week 1 of the course.
 -> carData.xlsx | Excel file with graphs from the generated car data.
 
-Unfortunately, do to time constraints, I was unable to provide a comprehensive document detailing testing, debugging, and outputs of all the programs, run the tester class to see the basic (but configurable) tests preformed!
+Unfortunately, do to time constraints, I was unable to provide a comprehensive document detailing testing, debugging, and optimization of all the programs, run the tester class to see the basic (but configurable) tests preformed!

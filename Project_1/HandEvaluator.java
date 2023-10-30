@@ -4,6 +4,9 @@
  * 10/29/2023
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,37 +17,24 @@ public class HandEvaluator {
 	public void populateDeck(int totalCards) {
 		this.deck = new ArrayList<Card>(totalCards);
 		int maxSuitType = 13;
-		int location = 0;
-		int value = 1;
-		for(int i = 0; i < maxSuitType; i++) {
-			this.deck.add(new Card(value, "Hearts"));
-			location = location + 1;
-			value = value + 1;
+		for(int i = 0; i < maxSuitType; i++){
+			this.deck.add(new Card(i, "Hearts"));
 		}
-		value = 1;
-		for(int i = location; i < location + maxSuitType; i++){
-			this.deck.add(new Card(value, "Spades"));
-			value = value + 1;
-			location = location + 1;
+		for(int i = 0; i < maxSuitType; i++){
+			this.deck.add(new Card(i, "Clubs"));
 		}
-		value = 1;
-		for(int i = location; i < location + maxSuitType; i++){
-			this.deck.add(new Card(value, "Diamonds"));
-			location = location + 1;
-			value = value + 1;
+		for(int i = 0; i < maxSuitType; i++){
+			this.deck.add(new Card(i, "Spades"));
 		}
-		value = 1;
-		for(int i = location; i < location + maxSuitType; i++){
-			this.deck.add(new Card(value, "Clubs"));
-			location = location + 1;
-			value = value + 1;
+		for(int i = 0; i < maxSuitType; i++){
+			this.deck.add(new Card(i, "Diamonds"));
 		}
+		
 		this.shuffle();
 	}
 
 	/**
 	 * Shuffles an array of cards. (Knowledge obtained from: https://stackoverflow.com/questions/16112515/how-to-shuffle-an-arraylist)
-	 * @param deck - Array of cards being shuffled.
 	 */
 	public void shuffle(){
 		Collections.shuffle(this.deck);
@@ -148,17 +138,169 @@ public class HandEvaluator {
 	 * @param hand - Hand to evaluate
 	 * @return - True if found, false otherwise.
 	 */
-	public boolean evaluteStraight(ArrayList<Card> hand){
+	public boolean evaluateStraight(ArrayList<Card> hand){
 		boolean test = false;
-		for(int i = 1; i < hand.size(); i++){
-			if(hand.get(i).getValue() == hand.get(i - 1).getValue() + 1){
+		for(int i = 0; i < hand.size() - 1; i++){
+			if(hand.get(i + 1).getValue() == hand.get(i).getValue() - 1){
 				test = true;
 			} else {
+				// At first fail, it's over.
 				test = false;
+				return test;
 			}
 		}
 		return test;
 	}
 
+	/**
+	 * Test for a flush in the hand.
+	 * @param hand - Hand to test
+	 * @return - False if mismatched suits, true otherwise.
+	 */
+	public boolean evaluateFlush(ArrayList<Card> hand){
+		Card first = hand.get(0);
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).getSuit() != first.getSuit()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Evaluates a StraightFlush, it must pass both straight and flush tests
+	 * @param hand - Hand to test
+	 * @return = Result of flush and straight, true if and only if both pass.
+	 */
+	public boolean evaluateStraightFlush(ArrayList<Card> hand){
+		return evaluateFlush(hand) && evaluateStraight(hand);
+	}
+
+	public boolean evaluateFullHouse(ArrayList<Card> hand){
+		return evaluateThreeKind(hand) && evaluatePair(hand);
+	}
+
+	public boolean evaluateRoyalFlush(ArrayList<Card> hand){
+		boolean test = false;
+		Card first = hand.get(0);
+		int count = 0;
+		// If any of the suits do not match the first card, automatically disqualify.
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).getSuit() != first.getSuit()){
+				return false;
+			}
+			if(hand.get(i).getValue() == 1 || hand.get(i).getValue() == 13 || hand.get(i).getValue() == 12 || hand.get(i).getValue() == 11 || hand.get(i).getValue() == 10){
+				count = count + 1;
+			}
+		}
+		// Check to see if all the exodia pieces are present. (In lets say, a 10 card deck, as long as the exodia pieces are present, the rest doesn't matter)
+		if(count >= 5){
+			test = true;
+		}
+		return test;
+	}
+
+	public boolean evaluateHighCard(ArrayList<Card> hand){
+		int count = 0;
+		boolean test = false;
+		for(int i = 0; i < hand.size(); i++){
+			if(hand.get(i).getValue() == 1 || hand.get(i).getValue() == 13 || hand.get(i).getValue() == 12 || hand.get(i).getValue() == 11){
+				count = count + 1;
+			}
+		}
+		if(count == 1){
+			test = true;
+		}
+		return test;
+	}
+
+	public boolean outputToFile(double[] stats, String[] descs, String fileName){
+		boolean success = false;
+		// Attempt to make a file.
+		try{
+			File newFile = new File(fileName);
+			newFile.createNewFile();
+		}catch(IOException e){
+			return success;
+		}
+		//Now write to it
+		try{
+			FileWriter writer = new FileWriter(fileName);
+			for(int i = 0; i < stats.length; i++){
+				writer.write(descs[i] + "," + stats[i] * 100 + "\n");
+			}
+			writer.close();
+			success = true;
+		} catch(IOException e){
+			return success;
+		}
+		return success;
+	}
+
+	public String simulate(int totalTrials){
+		int passPair = 0;
+        int passThree = 0;
+        int passFour = 0;
+        int passStraight = 0;
+        int passFlush = 0;
+        int passFullHouse = 0;
+        int passStraightFlush = 0;
+        int passRoyal = 0;
+        int passHighCard = 0;
+        for(int i = 0; i < totalTrials; i++){
+            ArrayList<Card> hand = drawHand(5);
+            if(evaluatePair(hand)){
+                passPair = passPair + 1;
+            }
+            if(evaluateThreeKind(hand)){
+                passThree = passThree + 1;
+            }
+            if(evaluateFourKind(hand)){
+                passFour = passFour + 1;
+            }
+            if(evaluateStraight(hand)){
+                passStraight = passStraight + 1;
+            }
+            if(evaluateFlush(hand)){
+                passFlush = passFlush + 1;
+            }
+            if(evaluateFullHouse(hand)){
+                passFullHouse = passFullHouse + 1;
+            }
+            if(evaluateStraightFlush(hand)){
+                passStraightFlush = passStraightFlush + 1;
+            }
+            if(evaluateRoyalFlush(hand)){
+                passRoyal = passRoyal + 1;
+            }
+            if(evaluateHighCard(hand)){
+                passHighCard = passHighCard + 1;
+            }
+        }
+        double[] stats = {
+            passPair / (double)totalTrials,
+            passThree / (double)totalTrials,
+            passFour / (double)totalTrials,
+            passStraight / (double)totalTrials,
+            passFlush / (double)totalTrials,
+            passFullHouse / (double)totalTrials,
+            passStraightFlush / (double)totalTrials,
+            passRoyal / (double)totalTrials,
+            passHighCard / (double)totalTrials
+        };
+        String[] descs = {
+            "Pairs",
+            "Three of a Kind",
+            "Four of a Kind",
+            "Straight",
+            "Flush",
+            "Full House",
+            "Straight Flush",
+            "Royal Flush",
+            "High Card"
+        };
+		outputToFile(stats, descs, "pokerData.csv");
+        return(String.format("In this test of %d hands: Pairs: %d, Three of a kind: %d, Four of a kind: %d, Straights: %d, Flush: %d, Full House: %d, Straight flush: %d, Royal Flush: %d, and %d High cards", totalTrials, passPair, passThree, passFour, passStraight, passFlush, passFullHouse, passStraightFlush, passRoyal, passHighCard));
+	}
 
 }
