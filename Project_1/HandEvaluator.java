@@ -176,10 +176,20 @@ public class HandEvaluator {
 		return evaluateFlush(hand) && evaluateStraight(hand);
 	}
 
+	/**
+	 * Evaluates a full house by calling pair, and three of a kind.
+	 * @param hand - Hand being evaluated
+	 * @return - Result of pair and three of a kind, if and only if both pass.
+	 */
 	public boolean evaluateFullHouse(ArrayList<Card> hand){
 		return evaluateThreeKind(hand) && evaluatePair(hand);
 	}
 
+	/**
+	 * Evaluates the rarest hand in all of Poker, the royal flush.
+	 * @param hand - Hand to evaluate
+	 * @return - True if and only if a given hand contains Ace, Jack, Queen, King, Ten in any order, and all of the same suit. False otherwise.
+	 */
 	public boolean evaluateRoyalFlush(ArrayList<Card> hand){
 		boolean test = false;
 		Card first = hand.get(0);
@@ -200,6 +210,11 @@ public class HandEvaluator {
 		return test;
 	}
 
+	/**
+	 * Evaluates the high card hand
+	 * @param hand - Hand to evaluate
+	 * @return - True if and only if a hand has exactly one Ace, Jack, Queen, or King
+	 */
 	public boolean evaluateHighCard(ArrayList<Card> hand){
 		int count = 0;
 		boolean test = false;
@@ -214,6 +229,14 @@ public class HandEvaluator {
 		return test;
 	}
 
+
+	/**
+	 * Outputs the simulation to a .csv file
+	 * @param stats - Array of doubles
+	 * @param descs - Array of String descriptors for the doubles
+	 * @param fileName - Name of the file
+	 * @return - True if written, false other wise.
+	 */
 	public boolean outputToFile(double[] stats, String[] descs, String fileName){
 		boolean success = false;
 		// Attempt to make a file.
@@ -237,6 +260,11 @@ public class HandEvaluator {
 		return success;
 	}
 
+	/**
+	 * Monte Carlo simulation
+	 * @param totalTrials - How many trials to preform
+	 * @return - A formatted, readable string of the probability of each hand type in the given simulation.
+	 */
 	public String simulate(int totalTrials){
 		int passPair = 0;
         int passThree = 0;
